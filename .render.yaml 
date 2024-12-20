@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: md2s-back
+    env: docker
+    branch: main
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 8080

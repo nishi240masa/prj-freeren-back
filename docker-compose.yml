@@ -1,0 +1,42 @@
+version: "3" # composeファイルのバージョン
+services:
+  md2s: # サービス名
+    container_name: md2s
+    build:
+      context: . # ビルドするコンテキストのパス
+      dockerfile: ./build/go/Dockerfile # ビルドに使うDockerファイルのパス
+    volumes: # マウントディレクトリ
+      - ./src:/go/src/app
+    hostname: localhost
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}" # 環境変数 PORT を使用し、デフォルトは 4000 に設定
+    environment:
+      - PORT=${PORT:-8080} # コンテナ内の環境変数として設定
+    tty: true # コンテナの永続化
+    env_file: # .envファイル
+      - .env
+    networks:
+      - private-net
+
+  # posttgresql
+  posttgresql-db:
+    container_name: ${DB_HOST}
+    image: postgres:14
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./build/postgresql/data:/var/lib/postgresql/data
+      - ./build/postgresql/init:/docker-entrypoint-initdb.d # DBを初期化
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    networks:
+      - private-net
+
+volumes:
+  db-store:
+    driver: local
+networks:
+  private-net:
+    driver: bridge
