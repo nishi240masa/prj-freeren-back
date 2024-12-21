@@ -16,7 +16,7 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
-// HandleWebSocket handles WebSocket connections
+// HandleWebSocket はWebSocket接続を処理します
 func HandleWebSocket(c *gin.Context) {
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
@@ -36,10 +36,14 @@ func HandleWebSocket(c *gin.Context) {
 	}
 
 	// デバイスを登録
-	services.RegisterDevice(deviceID, conn)
 
+	if deviceID != "" {
+	services.RegisterDevice(deviceID, conn)
+	}else{
 	// プレイヤーを登録
 	services.RegisterPlayer(playerId, conn)
+	}
+
 
 	// メッセージの受信
 	for {
