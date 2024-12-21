@@ -1,7 +1,7 @@
 version: "3" # composeファイルのバージョン
 services:
-  md2s: # サービス名
-    container_name: md2s
+  freeren: # サービス名
+    container_name: freeren
     build:
       context: . # ビルドするコンテキストのパス
       dockerfile: ./build/go/Dockerfile # ビルドに使うDockerファイルのパス
@@ -15,22 +15,6 @@ services:
     tty: true # コンテナの永続化
     env_file: # .envファイル
       - .env
-    networks:
-      - private-net
-
-  # posttgresql
-  posttgresql-db:
-    container_name: ${DB_HOST}
-    image: postgres:14
-    environment:
-      - POSTGRES_DB=${DB_DATABASE}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-    volumes:
-      - ./build/postgresql/data:/var/lib/postgresql/data
-      - ./build/postgresql/init:/docker-entrypoint-initdb.d # DBを初期化
-    ports:
-      - ${DB_PORT}:${DB_PORT}
     networks:
       - private-net
 

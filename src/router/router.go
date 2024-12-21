@@ -35,11 +35,8 @@ func Init() {
 
 	})
 
-	// ユーザー
-	users := r.Group("/users")
-	users.GET("", controllers.GetUser)
-	users.POST("", controllers.CreateUser)
-
+	// websocketのエンドポイントを追加
+	r.GET("/ws", controllers.HandleWebSocket)
 
 	// 指定されたポートでサーバーを開始
 	if err := r.Run(fmt.Sprintf(":%s", port)); err != nil {
