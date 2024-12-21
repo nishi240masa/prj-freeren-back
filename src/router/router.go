@@ -38,6 +38,16 @@ func Init() {
 	// websocketのエンドポイントを追加
 	r.GET("/ws", controllers.HandleWebSocket)
 
+
+	// デバイスの入力を処理するエンドポイントを追加
+	r.POST("/device/input", controllers.ProcessDeviceInputHandler)
+
+	// 現在のゲーム状態を取得するエンドポイントを追加
+	r.GET("/game/state", controllers.GetGameStateHandler)
+
+	// プレイヤーのWebSocket接続を処理するエンドポイントを追加
+	r.GET("/player/ws", controllers.HandlePlayerWebSocket)
+
 	// 指定されたポートでサーバーを開始
 	if err := r.Run(fmt.Sprintf(":%s", port)); err != nil {
 		fmt.Printf("Failed to start server: %s\n", err)

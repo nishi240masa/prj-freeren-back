@@ -3,6 +3,7 @@ package services
 import (
 	"encoding/json"
 	"log"
+	"md2s/models"
 	"sync"
 
 	"github.com/gorilla/websocket"
@@ -25,17 +26,7 @@ type Device struct {
 	Conn *websocket.Conn
 }
 
-// ゲーム状態
-type GameState struct {
-	Player1HP   int    `json:"player1Hp"`
-	Player1MP   int    `json:"player1Mp"`
-	Player1DF   int    `json:"player1Df"`
-	Player1Action string `json:"player1Action"`
-	Player2HP   int    `json:"player2Hp"`
-	Player2MP   int    `json:"player2Mp"`
-	Player2DF   int    `json:"player2Df"`
-	Player2Action string `json:"player2Action"`
-}
+
 
 var (
 	devices   = map[string]*Device{} // デバイス情報を管理
@@ -144,7 +135,7 @@ func ProcessInputFromDevice(deviceID string, message []byte) {
 
 // ゲーム状態を全プレイヤーに送信
 func broadcastGameState() {
-	gameState := GameState{
+	gameState := models.GameState{
 		Player1HP:   players["player1"].HP,
 		Player1MP:   players["player1"].MP,
 		Player1DF:   players["player1"].DF,
