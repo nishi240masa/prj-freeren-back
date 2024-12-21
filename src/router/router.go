@@ -35,17 +35,17 @@ func Init() {
 
 	})
 
-	// websocketのエンドポイントを追加
+	// websocketのエンドポイント
 	r.GET("/ws", controllers.HandleWebSocket)
 
 
-	// デバイスの入力を処理するエンドポイントを追加
+	// デバイスの入力を処理するエンドポイント
 	r.POST("/device/input", controllers.ProcessDeviceInputHandler)
 
-	// 現在のゲーム状態を取得するエンドポイントを追加
+	// 現在のゲーム状態を取得するエンドポイント
 	r.GET("/game/state", controllers.GetGameStateHandler)
 
-	// プレイヤーのWebSocket接続を処理するエンドポイントを追加
+	// プレイヤーのWebSocket接続を処理するエンドポイント
 	r.GET("/player/ws", controllers.HandlePlayerWebSocket)
 
 	// 指定されたポートでサーバーを開始
