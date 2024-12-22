@@ -31,6 +31,7 @@ func ProcessInputFromPlayer(playerID string, message []byte) error {
 	}
 
 	// プレイヤーのアクションを更新
+
 	player.Action = input.Action
 	updateGameState()
 
@@ -67,6 +68,9 @@ func HttpProcessInputFromDevice(deviceID, action string) error {
 	if attacker == nil || target == nil {
 		return errors.New("invalid device ID")
 	}
+
+	// プレイヤーの行動を登録
+	attacker.Action = action
 
 	// プレイヤーの行動を処理
 	switch action {
