@@ -115,12 +115,19 @@ func getPlayersByDevice(deviceID string) (*Player, *Player) {
 
 // 攻撃処理
 func processAttack(attacker, target *Player) {
+	if attacker.MP == 0 {
+		log.Printf("Player %s has no MP", attacker.ID)
+		return
+	}
 	if target.Action == "defend" {
 		log.Printf("Player %s's attack was blocked by Player %s's defense!", attacker.ID, target.ID)
 	} else {
 		damage := attacker.MP / 10
 		target.HP -= damage
 		attacker.MP -= 20
+		if attacker.MP < 0 {
+			attacker.MP = 0
+		}
 		if target.HP < 0 {
 			target.HP = 0
 		}
@@ -130,6 +137,13 @@ func processAttack(attacker, target *Player) {
 
 // 防御処理
 func processDefense(player *Player) {
+
+	if player.DF == 0 {
+		log.Printf("Player %s has no DF", player.ID)
+		player.Action = "none"
+		return
+	}
+
 	player.DF -= 10
 	if player.DF < 0 {
 		player.DF = 0
