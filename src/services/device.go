@@ -157,7 +157,7 @@ func processDefense(player *Player) {
 
 // MP回復処理
 func processCollection(player *Player) {
-	player.MP += 20
+	player.MP += 10
 	if player.MP > 100 {
 		player.MP = 100
 	}
