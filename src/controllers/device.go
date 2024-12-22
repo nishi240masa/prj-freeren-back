@@ -7,8 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
-
 //  デバイスからの入力を処理
 func ProcessDeviceInputHandler(c *gin.Context) {
 	var input struct {
@@ -22,7 +20,7 @@ func ProcessDeviceInputHandler(c *gin.Context) {
 	}
 
 	if err := services.HttpProcessInputFromDevice(input.DeviceID, input.Action); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to process input"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
