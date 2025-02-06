@@ -138,6 +138,9 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 	return nil
 }
+
+     updateGameState()    
+
 	return nil
 }
 
