@@ -107,7 +107,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 	if attacker.State == "ready" && target.State == "ready" {
 		startCountdown()
 
-		return errors.New("change fiting")
+		return errors.New("change fighting")
 
 	}
 
