@@ -80,7 +80,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 	}
 
 	// 片方が準備中の場合、actionを無視する
-	if attacker.State == "ready" && target.State == "noReady" {
+	if attacker.State == "ready" && target.State == "noReady" || target.State == "" {
 		log.Printf("Player %s is ready, but Player %s is not ready", attacker.ID, target.ID)
 		updateGameState()
 		return errors.New("opponent not ready")
