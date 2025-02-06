@@ -76,7 +76,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 	if attacker.State == "noReady" {
 		log.Printf("Player %s is not ready", attacker.ID)
-		return nil
+		return errors.New("player not ready")
 	}
 
 	startCountdown := func() {
@@ -92,7 +92,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 			updateGameState()
 	}
 
-	
+
 
 	// 準備が完了した場合かつ相手も準備が完了している場合、カウントダウンを開始
 	if attacker.State == "ready" && target.State == "ready" {
