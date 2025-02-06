@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"md2s/models"
+	"time"
 )
 
 // デバイス情報
@@ -72,6 +73,35 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 	// stateを更新
 	attacker.State = state
+
+	if attacker.State == "noReady" {
+		log.Printf("Player %s is not ready", attacker.ID)
+		return nil
+	}
+
+	startCountdown := func() {
+		// カウントダウンを開始
+			for i := 3; i > 0; i-- {
+				attacker.Time = i
+				target.Time = i
+				updateGameState()
+				time.Sleep(time.Second)
+			}
+			attacker.Time = 0
+			target.Time = 0
+			updateGameState()
+	}
+
+	
+
+	// 準備が完了した場合かつ相手も準備が完了している場合、カウントダウンを開始
+	if attacker.State == "ready" && target.State == "ready" {
+		startCountdown()
+
+		
+
+	}
+
 
 
 	// プレイヤーの行動を登録
