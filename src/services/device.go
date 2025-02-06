@@ -74,7 +74,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 	// stateを更新
 	attacker.State = state
 
-	if attacker.State == "noReady" {
+	if attacker.State == "noReady" || attacker.State == "" {
 		log.Printf("Player %s is not ready", attacker.ID)
 		return errors.New("player not ready")
 	}
