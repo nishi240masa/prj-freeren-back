@@ -12,4 +12,5 @@ type GameState struct {
 	Player2DF     int    `json:"player2Df"`
 	Player2Action string `json:"player2Action"`
 	Player2State  string `json:"player2State"`
+	Time		  int   `json:"time"`
 }

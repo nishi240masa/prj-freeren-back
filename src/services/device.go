@@ -228,6 +228,7 @@ func updateGameState() {
 		Player2DF:     players["player2"].DF,
 		Player2Action: players["player2"].Action,
 		Player2State: players["player2"].State,
+		Time:          players["player1"].Time,
 	}
 
 	// プレイヤーにブロードキャスト
