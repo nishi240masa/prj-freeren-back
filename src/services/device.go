@@ -79,6 +79,14 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 		return errors.New("player not ready")
 	}
 
+	// 片方が準備中の場合、actionを無視する
+	if attacker.State == "ready" && target.State == "noReady" {
+		log.Printf("Player %s is ready, but Player %s is not ready", attacker.ID, target.ID)
+		return errors.New("opponent not ready")
+		
+	}
+
+
 	startCountdown := func() {
 		// カウントダウンを開始
 			for i := 3; i > 0; i-- {
@@ -98,12 +106,14 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 	if attacker.State == "ready" && target.State == "ready" {
 		startCountdown()
 
-		
+		return errors.New("change fiting")
 
 	}
 
 
 
+	if attacker.State == "ready" && target.State == "ready" {
+		
 	// プレイヤーの行動を登録
 	attacker.Action = action
 
@@ -122,6 +132,9 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 	// ゲーム状態を更新
 	updateGameState()
+
+	return nil
+}
 	return nil
 }
 
@@ -208,10 +221,12 @@ func updateGameState() {
 		Player1MP:     players["player1"].MP,
 		Player1DF:     players["player1"].DF,
 		Player1Action: players["player1"].Action,
+		Player1State: players["player1"].State,
 		Player2HP:     players["player2"].HP,
 		Player2MP:     players["player2"].MP,
 		Player2DF:     players["player2"].DF,
 		Player2Action: players["player2"].Action,
+		Player2State: players["player2"].State,
 	}
 
 	// プレイヤーにブロードキャスト
