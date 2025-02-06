@@ -114,6 +114,8 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 
 	if attacker.State == "fiting" && target.State == "fiting" {
+
+	updateGameState()
 		
 	// プレイヤーの行動を登録
 	attacker.Action = action
