@@ -60,14 +60,19 @@ func HttpUnregisterDevice(id string) {
 }
 
 // デバイスからの入力を処理
-func HttpProcessInputFromDevice(deviceID, action string) error {
+func HttpProcessInputFromDevice(deviceID, action, state string) error {
 	mu.Lock()
 	defer mu.Unlock()
 
+	// デバイスIDに基づいてプレイヤーを判定
 	attacker, target := getPlayersByDevice(deviceID)
 	if attacker == nil || target == nil {
 		return errors.New("invalid device ID")
 	}
+
+	// stateを更新
+	attacker.State = state
+
 
 	// プレイヤーの行動を登録
 	attacker.Action = action
@@ -99,10 +104,12 @@ func GetGameState() models.GameState {
 		Player1MP:     players["player1"].MP,
 		Player1DF:     players["player1"].DF,
 		Player1Action: players["player1"].Action,
+		Player1State: players["player1"].State,
 		Player2HP:     players["player2"].HP,
 		Player2MP:     players["player2"].MP,
 		Player2DF:     players["player2"].DF,
 		Player2Action: players["player2"].Action,
+		Player2State: players["player2"].State,
 	}
 }
 

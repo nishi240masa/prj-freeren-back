@@ -5,6 +5,7 @@ import (
 	"log"
 	"md2s/models"
 	"sync"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -15,7 +16,10 @@ type Player struct {
 	HP     int
 	MP     int
 	DF     int
-	Action string           // 現在の行動 ("attack", "defend", etc.)
+	Action string  // 現在の行動 ("attack", "defend", etc.)
+	// 準備中か戦闘中かなどの状態
+	State string   // 現在の状態 ("noReady","ready", etc.)
+	Time  int
 	Conn   *websocket.Conn
 }
 
@@ -69,6 +73,7 @@ func ProcessInputFromDevice(deviceID string, message []byte) {
 	// 入力データを解析
 	var input struct {
 		Action string `json:"action"`
+		State string `json:"state"`
 	}
 	if err := json.Unmarshal(message, &input); err != nil {
 		log.Printf("Invalid input from device %s: %v", deviceID, err)
@@ -90,6 +95,48 @@ func ProcessInputFromDevice(deviceID string, message []byte) {
 		log.Printf("Invalid device ID: %s", deviceID)
 		return
 	}
+
+	// stateを更新
+	attackingPlayer.State = input.State
+
+	// 準備中の場合、actionを無視する
+
+	if attackingPlayer.State == "noReady" {
+		return
+	}
+
+	// 準備が完了した場合かつ相手も準備が完了している場合、戦闘を開始actionを処理
+	if attackingPlayer.State == "ready" && targetPlayer.State == "ready" {
+
+
+		// 3秒カウントダウン
+		// 3秒後に攻撃処理を実行
+		attackingPlayer.Time = 3
+		targetPlayer.Time = 3
+
+		// ゲーム状態をブロードキャスト
+		broadcastGameState()
+
+		// カウントダウン処理
+		for attackingPlayer.Time > 0 {
+			attackingPlayer.Time--
+			targetPlayer.Time--
+			broadcastGameState()
+			time.Sleep(1 * time.Second)
+		}
+
+
+		// 3秒後にstateを戦闘中に変更
+		attackingPlayer.State = "fighting"
+		targetPlayer.State = "fighting"
+
+		// ゲーム状態をブロードキャスト
+		broadcastGameState()
+		
+
+
+
+
 
 	// プレイヤーの行動を更新
 	attackingPlayer.Action = input.Action
@@ -128,8 +175,30 @@ func ProcessInputFromDevice(deviceID string, message []byte) {
 
 
 
+
+	// ゲーム終了判定
+	if targetPlayer.HP == 0 {
+		log.Printf("Player %s wins!", attackingPlayer.ID)
+				attackingPlayer.State = "noReady"
+		targetPlayer.State = "noReady"
+
+		// プレイヤーのHPとMP,DFをリセット
+		attackingPlayer.HP = 100
+		targetPlayer.HP = 100
+		attackingPlayer.MP = 100
+		targetPlayer.MP = 100
+		attackingPlayer.DF = 100
+		targetPlayer.DF = 100
+
+
+	}
+
+
+
 	// 状態をブロードキャスト
 	broadcastGameState()
+}
+
 }
 
 
@@ -140,10 +209,12 @@ func broadcastGameState() {
 		Player1MP:   players["player1"].MP,
 		Player1DF:   players["player1"].DF,
 		Player1Action: players["player1"].Action,
+		Player1State: players["player1"].State,
 		Player2HP:   players["player2"].HP,
 		Player2MP:   players["player2"].MP,
 		Player2DF:   players["player2"].DF,
 		Player2Action: players["player2"].Action,
+		Player2State: players["player2"].State,
 	}
 
 	for _, player := range players {

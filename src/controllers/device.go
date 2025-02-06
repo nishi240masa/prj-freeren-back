@@ -12,6 +12,7 @@ func ProcessDeviceInputHandler(c *gin.Context) {
 	var input struct {
 		DeviceID string `json:"deviceId"`
 		Action   string `json:"action"`
+		State   string `json:"state"`
 	}
 
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -19,7 +20,7 @@ func ProcessDeviceInputHandler(c *gin.Context) {
 		return
 	}
 
-	if err := services.HttpProcessInputFromDevice(input.DeviceID, input.Action); err != nil {
+	if err := services.HttpProcessInputFromDevice(input.DeviceID, input.Action, input.State); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
