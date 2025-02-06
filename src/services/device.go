@@ -113,7 +113,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 
 
-	if attacker.State == "fiting" && target.State == "fiting" {
+	if attacker.State == "fighting" && target.State == "fighting" {
 
 	updateGameState()
 		
