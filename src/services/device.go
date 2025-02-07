@@ -142,7 +142,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 	if target.HP == 0 {
 		log.Printf("Player %s wins!", attacker.ID)
 		target.State = "death"
-		attacker.State = "death"
+		attacker.State = "win"
 	}
 
 	// ゲーム状態を更新
