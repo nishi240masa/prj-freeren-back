@@ -65,6 +65,8 @@ func RegisterPlayer(id string, conn *websocket.Conn) {
     players[id] = &Player{ID: id, HP: 100, MP: 100, DF: 100, Action: "none",State: "noReady",Time: 3, Conn: conn}
 	log.Printf("Player %s connected", id)
 
+	GameOver = false
+
 	// 状態をブロードキャスト
 	broadcastGameState()
 }
