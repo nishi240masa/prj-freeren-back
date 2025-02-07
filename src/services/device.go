@@ -140,7 +140,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 	// ゲーム状態を更新
 	updateGameState()
 
-	return nil
+	return errors.New("fighting")
 }
 
      updateGameState()    
