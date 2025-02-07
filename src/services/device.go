@@ -91,19 +91,6 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 	
 			GameOver = true
 	
-			// 初期化
-			attacker.HP = 100
-			attacker.MP = 100
-			attacker.DF = 100
-			attacker.Action = "none"
-			attacker.Time = 3
-	
-			target.HP = 100
-			target.MP = 100
-			target.DF = 100
-			target.Action = "none"
-			target.Time = 3
-	
 	
 	
 			updateGameState()
