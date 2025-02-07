@@ -117,6 +117,15 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 	// stateを更新
 	attacker.State = state
 
+
+	//　両方のデバイスが初期状態になった場合、初期化
+	if attacker.State == "noReady" && target.State == "noReady" {
+		log.Printf("Player %s is not ready", attacker.ID)
+		GameOver = false
+		return errors.New("player not ready")
+	}
+
+
 	if attacker.State == "noReady" || attacker.State == "" {
 		log.Printf("Player %s is not ready", attacker.ID)
 		return errors.New("player not ready")
