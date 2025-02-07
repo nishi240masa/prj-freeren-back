@@ -116,7 +116,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 	}
 
 	// ゲームオーバーの場合、ゲームを終了
-	if target.HP == 0 {
+	if target.HP == 0 || attacker.HP == 0 {
 		log.Printf("Player %s wins!", attacker.ID)
 		target.State = "death"
 		attacker.State = "win"
@@ -143,6 +143,13 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 		return errors.New("game over")
 
+	}
+
+
+	if attacker.State == "death" || target.State == "death" {
+
+		return errors.New("game over")
+		
 	}
 
 
