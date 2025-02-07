@@ -73,6 +73,47 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 		return errors.New("invalid device ID")
 	}
 
+
+		// ゲームオーバーの場合、ゲームを終了
+		if target.HP == 0 || attacker.HP == 0  || GameOver {
+
+
+			log.Printf("Game Over: %v", GameOver)
+			log.Printf("Player %s wins!", attacker.ID)
+	
+			if target.HP == 0 {
+				target.State = "death"
+				attacker.State = "win"
+			} else {
+				attacker.State = "death"
+				target.State = "win"
+			}
+	
+			GameOver = true
+	
+			// 初期化
+			attacker.HP = 100
+			attacker.MP = 100
+			attacker.DF = 100
+			attacker.Action = "none"
+			attacker.Time = 3
+	
+			target.HP = 100
+			target.MP = 100
+			target.DF = 100
+			target.Action = "none"
+			target.Time = 3
+	
+	
+	
+			updateGameState()
+	
+	
+	
+			return errors.New("game over")
+	
+		}
+
 	// stateを更新
 	attacker.State = state
 
@@ -117,45 +158,6 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 	}
 
-	// ゲームオーバーの場合、ゲームを終了
-	if target.HP == 0 || attacker.HP == 0  || GameOver {
-
-
-		log.Printf("Game Over: %v", GameOver)
-		log.Printf("Player %s wins!", attacker.ID)
-
-		if target.HP == 0 {
-			target.State = "death"
-			attacker.State = "win"
-		} else {
-			attacker.State = "death"
-			target.State = "win"
-		}
-
-		GameOver = true
-
-		// 初期化
-		attacker.HP = 100
-		attacker.MP = 100
-		attacker.DF = 100
-		attacker.Action = "none"
-		attacker.Time = 3
-
-		target.HP = 100
-		target.MP = 100
-		target.DF = 100
-		target.Action = "none"
-		target.Time = 3
-
-
-
-		updateGameState()
-
-
-
-		return errors.New("game over")
-
-	}
 
 
 	if attacker.State == "death" || target.State == "death" {
