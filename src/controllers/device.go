@@ -25,7 +25,7 @@ func ProcessDeviceInputHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Input processed successfully"})
+	c.JSON(http.StatusOK, gin.H{"error": "Input processed successfully"})
 }
 
 //  現在のゲーム状態を取得
