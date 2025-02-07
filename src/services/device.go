@@ -115,6 +115,36 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 	}
 
+	// ゲームオーバーの場合、ゲームを終了
+	if target.HP == 0 {
+		log.Printf("Player %s wins!", attacker.ID)
+		target.State = "death"
+		attacker.State = "win"
+
+
+		// 初期化
+		attacker.HP = 100
+		attacker.MP = 100
+		attacker.DF = 100
+		attacker.Action = "none"
+		attacker.Time = 3
+
+		target.HP = 100
+		target.MP = 100
+		target.DF = 100
+		target.Action = "none"
+		target.Time = 3
+
+
+
+		updateGameState()
+
+
+
+		return errors.New("game over")
+
+	}
+
 
 
 	if attacker.State == "fighting" && target.State == "fighting" {
@@ -137,24 +167,6 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 		return errors.New("unknown action")
 	}
 
-	// ゲーム終了判定
-
-	if target.HP == 0 {
-		log.Printf("Player %s wins!", attacker.ID)
-		target.State = "death"
-		attacker.State = "win"
-
-		// reset game
-		players["player1"].HP = 100
-		players["player1"].MP = 100
-		players["player1"].DF = 100
-		players["player1"].Action = "none"
-		players["player2"].HP = 100
-		players["player2"].MP = 100
-		players["player2"].DF = 100
-		players["player2"].Action = "none"
-
-	}
 
 	// ゲーム状態を更新
 	updateGameState()
