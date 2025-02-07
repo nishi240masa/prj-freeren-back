@@ -196,7 +196,7 @@ func processAttack(attacker, target *Player) {
 	if target.Action == "defend" {
 		log.Printf("Player %s's attack was blocked by Player %s's defense!", attacker.ID, target.ID)
 	} else {
-		damage := attacker.MP / 10
+		damage := attacker.MP/5
 		target.HP -= damage
 		attacker.MP -= 20
 		if attacker.MP < 0 {
