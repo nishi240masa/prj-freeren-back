@@ -61,7 +61,7 @@ func UnregisterDevice(id string) {
 func RegisterPlayer(id string, conn *websocket.Conn) {
 	mu.Lock()
 	defer mu.Unlock()
-    players[id] = &Player{ID: id, HP: 100, MP: 100, DF: 100, Action: "none", Conn: conn}
+    players[id] = &Player{ID: id, HP: 100, MP: 100, DF: 100, Action: "none",State: "noReady",Time: 3, Conn: conn}
 	log.Printf("Player %s connected", id)
 }
 
@@ -132,7 +132,7 @@ func ProcessInputFromDevice(deviceID string, message []byte) {
 
 		// ゲーム状態をブロードキャスト
 		broadcastGameState()
-		
+
 
 
 
