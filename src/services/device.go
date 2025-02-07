@@ -137,6 +137,14 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 		return errors.New("unknown action")
 	}
 
+	// ゲーム終了判定
+
+	if target.HP == 0 {
+		log.Printf("Player %s wins!", attacker.ID)
+		target.State = "death"
+		attacker.State = "death"
+	}
+
 	// ゲーム状態を更新
 	updateGameState()
 
@@ -147,6 +155,8 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 	return nil
 }
+
+
 
 // GetGameState 現在のゲーム状態を取得
 func GetGameState() models.GameState {
