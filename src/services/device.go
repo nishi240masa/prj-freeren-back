@@ -89,6 +89,9 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 
 	startCountdown := func() {
+
+		if attacker.Time != 0 || target.Time != 0 {
+
 		// カウントダウンを開始
 			for i := 3; i > 0; i-- {
 				attacker.Time = i
@@ -99,6 +102,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 			attacker.Time = 0
 			target.Time = 0
 			updateGameState()
+		}
 	}
 
 
