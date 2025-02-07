@@ -13,6 +13,8 @@ type HttpDevice struct {
 	ID string
 }
 
+var GameOver = false
+
 
 // プレイヤーからの入力を処理
 func ProcessInputFromPlayer(playerID string, message []byte) error {
@@ -127,6 +129,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 			target.State = "win"
 		}
 
+		GameOver = true
 
 		// 初期化
 		attacker.HP = 100
@@ -160,7 +163,7 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 
 
 
-	if attacker.State == "fighting" && target.State == "fighting" {
+	if attacker.State == "fighting" && target.State == "fighting" && !GameOver {
 
 	updateGameState()
 		
