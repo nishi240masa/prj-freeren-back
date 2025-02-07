@@ -143,6 +143,17 @@ func HttpProcessInputFromDevice(deviceID, action, state string) error {
 		log.Printf("Player %s wins!", attacker.ID)
 		target.State = "death"
 		attacker.State = "win"
+
+		// reset game
+		players["player1"].HP = 100
+		players["player1"].MP = 100
+		players["player1"].DF = 100
+		players["player1"].Action = "none"
+		players["player2"].HP = 100
+		players["player2"].MP = 100
+		players["player2"].DF = 100
+		players["player2"].Action = "none"
+
 	}
 
 	// ゲーム状態を更新
